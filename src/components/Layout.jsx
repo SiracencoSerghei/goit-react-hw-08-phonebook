@@ -6,14 +6,14 @@ import Footer from "./Footer/Footer";
 
 export const Layout = () => {
   return (
-    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", gap: "15px" }}>
 
 <Toaster position="top-right" reverseOrder={false} />
       <AppBar />
       <Suspense fallback={null}>
-        <Outlet />
+        <Outlet style={{ marginBottom: "15px" }}/>
       </Suspense>
-      <Footer style={{ marginTop: "auto", position: "fixed", bottom: 0, left: 0, right: 0 }} />
+      <Footer style={{ marginTop: "auto" }} />
     </div>
   );
 };

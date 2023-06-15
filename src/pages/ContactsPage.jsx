@@ -21,21 +21,6 @@ export default function ContactsPage() {
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
   const filter = useSelector(selectFilteredContacts);
-
-  // const newContact = name => {
-  //   console.log('contacts-newContact', contacts)
-  //   contacts.find(
-  //     contact => contact.name.toLowerCase() === name.name.toLowerCase()
-  //   )
-  //     ? alert(`${name.name} is already in contacts`)
-  //     : dispatch(addContact(name));
-  // };
-
-  // const handleSubmit = (values, { resetForm }) => {
-  //   newContact(values);
-  //   resetForm();
-  // };
-
   useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
@@ -57,12 +42,8 @@ export default function ContactsPage() {
   alignItems="flex-end"
   mb={2}
 >
-  Phonebook{' '}
-  <FcContacts
-  color='gray.50'
-    style={{
-      marginLeft: '0.5rem' }}
-  />
+  Phonebook
+ 
 </Heading>
   <ContactForm />
       
@@ -71,7 +52,6 @@ export default function ContactsPage() {
         {isLoading && <p>Loading contacts...</p>}
         {error && <p>{error}</p>}
         {contacts.length > 0 && 
-        // <div>'Hello'</div>
         <ContactsList contacts={filter} />
         }
       </div>

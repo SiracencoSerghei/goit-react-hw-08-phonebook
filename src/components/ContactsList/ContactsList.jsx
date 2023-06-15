@@ -1,11 +1,16 @@
 import { List, ListIcon, ListItem, Text, Button } from '@chakra-ui/react';
+import { useState } from 'react';
 import { BsPhone, BsTrash } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteContact } from 'src/redux/contacts/operations';
-import { selectFilter } from 'src/redux/contacts/selectors';
+import { UpdateForm } from '../UpdateForm/UpdateForm';
 
 export const ContactsList = ({ contacts }) => {
   const dispatch = useDispatch();
+  const [isModalOpen, setModalOpen] = useState(false); // Add useState hook
+
+  
+
   return (
     <>
       <List spacing={2} w={{ base: '384px', lg: '450px' }}>
@@ -32,6 +37,17 @@ export const ContactsList = ({ contacts }) => {
             >
               {number}
             </Text>
+               {/* <Button onClick={() => setModalOpen(true)}>
+        <BsFillPencilFill size={20} color='var(--chakra-colors-blue-500)' />
+      </Button> */}
+
+{isModalOpen && (
+      <Button onClick={() => setModalOpen(true)}>
+        <BsFillPencilFill size={20} color='var(--chakra-colors-blue-500)' />
+      </Button>
+    )}
+      <UpdateForm isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
+      
             <Button onClick={() => dispatch(deleteContact(id))} color="#f44336">
               <BsTrash size={20} />
             </Button>
