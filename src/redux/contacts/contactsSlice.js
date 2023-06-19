@@ -1,5 +1,5 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import { fetchContacts, addContact, deleteContact } from './operations';
+import { fetchContacts, addContact, deleteContact, updateContact } from './operations';
 import * as reducers from './reducers';
 
 const actions = [fetchContacts, addContact, deleteContact];
@@ -22,6 +22,7 @@ const contactSlice = createSlice({
       .addCase(fetchContacts.fulfilled, reducers.FetchContactsReducer)
       .addCase(addContact.fulfilled, reducers.AddContactReducer)
       .addCase(deleteContact.fulfilled, reducers.DeleteContactReducer)
+      .addCase(updateContact.fulfilled, reducers.UpdateContactReducer)
       .addMatcher(
         isAnyOf(...getActions('fulfilled')),
         reducers.anyFulfilledReducer
