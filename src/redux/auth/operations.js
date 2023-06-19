@@ -44,7 +44,7 @@ export const logIn = createAsyncThunk(
       const res = await axios.post('/users/login', credentials);
       setAuthHeader(res.data.token);
       if (res.status === 200) {
-        console.log('res', res)
+        // console.log('res', res)
         showSuccessToast(`User ${res.data.user.name} is logged in.`);
       }
       return res.data;

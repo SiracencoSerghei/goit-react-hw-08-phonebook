@@ -10,7 +10,7 @@ import React, { useState, useRef } from "react";
 import { BsTrash, BsFillPencilFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { deleteContact, updateContact } from "../../redux/contacts/operations";
-import { showErrorToast, showSuccessToast } from 'src/utils/messages';
+import { showSuccessToast } from 'src/utils/messages';
 
 import { UpdateForm } from '../UpdateForm/UpdateForm';
 
@@ -30,7 +30,9 @@ export const ContactsListItem = ({ contact: { name, number, id }, contacts }) =>
   const dispatch = useDispatch();
 
   const deleteContactHandler = () => {
+    // console.log('id', id)
     dispatch(deleteContact(id));
+    showSuccessToast(`Contact: ${name} is deleted`)
   };
 
   const handleUpdate = (event) => {
@@ -54,23 +56,10 @@ export const ContactsListItem = ({ contact: { name, number, id }, contacts }) =>
   const handleChange = (event) => {
     const { name, value } = event.target;
     switch (name) {
-      case "name": const isNameExists = contacts.some(
-        (contact) => value.toLowerCase() === contact.name.toLowerCase()
-      );
-      if (isNameExists) {
-        showErrorToast(`Sorry ${value} already exist!`);
-        return;
-      }
+      case "name": 
         setUpdatedName(value);
         break;
       case "number":
-        const isNumberExists = contacts.some(
-          (contact) => value.toLowerCase() === contact.number.toLowerCase()
-        );
-        if (isNumberExists) {
-          showErrorToast(`Sorry ${value} already exist!`);
-          return;
-        }
         setUpdatedNumber(value);
         break;
       default:

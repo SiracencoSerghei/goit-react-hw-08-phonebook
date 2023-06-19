@@ -12,16 +12,6 @@ export const fetchContacts = createAsyncThunk(
       const response = await axios.get('/contacts');
       return response.data;
     } catch (e) {
-      if (e.response) {
-        const { status } = e.response;
-        if (status === 401) {
-          showErrorToast('Missing header with authorization token.');
-        } else if (status === 404) {
-          showErrorToast('There is no such user collection.');
-        } else if (status === 500) {
-          showErrorToast('Server error');
-        }
-      }
       return thunkAPI.rejectWithValue(e.message);
     }
   }
@@ -36,18 +26,10 @@ export const addContact = createAsyncThunk(
         number: number,
       });
       if (response.status === 201) {
-        showSuccessToast('The contact was successfully created.');
+        // console.log('status', response.status)
       }
       return response.data;
     } catch (e) {
-      if (e.response) {
-        const { status } = e.response;
-        if (status === 400) {
-          showErrorToast('Error creating contact');
-        } else if (status === 401) {
-          showErrorToast('Missing header with authorization token.');
-        }
-      }
       return thunkAPI.rejectWithValue(showErrorToast(e.message));
     }
   }
@@ -58,22 +40,9 @@ export const deleteContact = createAsyncThunk(
   async (contactId, thunkApi) => {
     try {
       const response = await axios.delete(`/contacts/${contactId}`);
-      if (response.status === 200) {
-        showSuccessToast('The contact was successfully deleted.');
-      }
       return response.data;
     } catch (e) {
-      if (e.response) {
-        const { status } = e.response;
-        if (status === 401) {
-          showErrorToast('Missing header with authorization token.');
-        } else if (status === 404) {
-          showErrorToast('There is no such user collection.');
-        } else if (status === 500) {
-          showErrorToast('Server error');
-        }
-      }
-      return thunkApi.rejectWithValue(showErrorToast(e.message));
+      return thunkApi.rejectWithValue(e.message);
     }
   }
 );
@@ -81,22 +50,11 @@ export const deleteContact = createAsyncThunk(
 export const updateContact = createAsyncThunk(
   'contacts/updateContact',
   async ({ id, contact }, thunkAPI) => {
-    // console.log(id, contact);
+    
     try {
       const response = await axios.patch(`/contacts/${id}`, contact);
-      if (response.status === 200) {
-        showSuccessToast('The contact was successfully updated.');
-      }
       return response.data;
-    } catch (error) {
-      const { status } = error.response;
-      if (status === 400) {
-        showErrorToast('Error updating contact');
-      } else if (status === 400) {
-        showErrorToast('Contact update failed.');
-      } else if (status === 401) {
-        showErrorToast('Missing header with authorization token.');
-      }
+    } catch (error) {      
       return thunkAPI.rejectWithValue(error.message);
     }
   }

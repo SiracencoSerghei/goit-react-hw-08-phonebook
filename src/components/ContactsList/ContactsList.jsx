@@ -1,10 +1,9 @@
-
+import React, { useEffect } from 'react';
 import { List } from '@chakra-ui/react';
 import { ContactsListItem } from '../ContactsListItem/ContactsListItem';
 
-export const ContactsList = ({ contacts }) => {
 
-  
+export const ContactsList = ( { contacts } ) => {
 
   return (
     <>
