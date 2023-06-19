@@ -18,11 +18,12 @@ export default function Home() {
           Contacts book
         </Heading>
         <Text color={"gray.500"} maxW={"3xl"}>
-          Using the contact book has never been so easy. You can add contacts,
-          see contacts and even delete them.
+          Using the contact book has never been so easy.<br/> You can add contacts,
+          update, see contacts or delete them.
         </Text>
         <Image
-          src="src/photo/myPhone.jpg"
+          // src="src/photo/myPhone.jpg"
+          src="https://images.pexels.com/photos/209663/pexels-photo-209663.jpeg?auto=compress&cs=tinysrgb&w=1600"
           alt="My Image"
           width="200px"
           height="200px"
