@@ -15,7 +15,7 @@ const ContactsPage = lazy(() => import('src/pages/ContactsPage'));
 export const App = () => {
   const dispatch = useDispatch();
   const { isRefreshing, isLoggedIn } = useAuth();
-  console.log('isLoggedIn', isLoggedIn)
+  // console.log('isLoggedIn', isLoggedIn)
 
   useEffect(() => {
     dispatch(refreshUser());

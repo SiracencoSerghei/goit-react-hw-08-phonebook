@@ -9,55 +9,69 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchContacts, addContact } from 'src/redux/contacts/operations';
-import { toast } from 'react-toastify';
+import { selectContacts, selectIsLoading } from 'src/redux/contacts/selectors';
+import { showErrorToast, showSuccessToast } from 'src/utils/messages';
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
-  const isLoading = useSelector(state => state.phonebook.contacts.isLoading);
-  
+  const isLoading = useSelector(selectIsLoading);
+  const contacts = useSelector(selectContacts);
+
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const [nameError, setNameError] = useState('');
-  const [numberError, setNumberError] = useState('');
+  const handleChange = (event) => {
+    event.preventDefault()
+    const { name, value } = event.currentTarget;
+    switch (name) {
+      case 'name':
+        const isNameExists = contacts.some(
+          (contact) => value.toLowerCase() === contact.name.toLowerCase()
+        );
+        if (isNameExists) {
+          showErrorToast(`Sorry ${value} already exist!`);
+          return;
+        }
+        setName(value);
+        break;
 
-  const validateForm = () => {
-    let isValid = true;
+      case 'number':
+      const isNumberExists = contacts.some(
+        (contact) => value.toLowerCase() === contact.number.toLowerCase()
+      );
+      if (isNumberExists) {
+        showErrorToast(`Sorry ${value} already exist!`);
+        return;
+      }
+        setNumber(value);
+        break;
 
-    if (name.trim() === '') {
-      setNameError('Name is required');
-      isValid = false;
-    } else {
-      setNameError('');
+      default:
+        break;
     }
-
-    if (number.trim() === '') {
-      setNumberError('Phone number is required');
-      isValid = false;
-    } else {
-      setNumberError('');
-    }
-
-    return isValid;
   };
 
   const newContact = () => {
-      const contact = {
-        name,
-        number
-      };
-      
-      console.log('Contact to be dispatched:', contact);
-      dispatch(addContact(contact));
+    const contact = {
+      name,
+      number,
     };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-
-    if (validateForm()) {
-      newContact();
-          reset();
-          console.log('Inside handleSubmit');
+    try {
+      dispatch(addContact(contact));
+      // console.log('contact', contact)
+      showSuccessToast(`Contact: ${contact.name} is added to your book`)
+      reset();
+    } catch (error) {
+      console.log('error', error);
     }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!name || !number) {
+      showErrorToast('Please fill in all fields');
+      return;
+    }
+    newContact();
   };
 
   const reset = () => {
@@ -66,11 +80,9 @@ export const ContactForm = () => {
   };
 
   useEffect(() => {
-    console.log('Inside useEffect', dispatch);
     dispatch(fetchContacts());
   }, [dispatch]);
 
-  // console.log('Before returning ContactForm', contact);
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -81,28 +93,24 @@ export const ContactForm = () => {
               type="text"
               name="name"
               value={name}
-              onChange={e => setName(e.target.value)}
+              onChange={handleChange}
               placeholder="Enter name"
               w="17rem"
               fontSize="1em"
             />
           </InputGroup>
-          {nameError && <div>{nameError}</div>}
           <InputGroup>
             <InputLeftAddon children="Number:" w="5.2rem" fontSize="1em" />
             <Input
               type="tel"
               name="number"
               value={number}
-              onChange={e => setNumber(e.target.value)}
+              onChange={handleChange}
               placeholder="Enter phone number"
               w="17rem"
               fontSize="1em"
             />
           </InputGroup>
-          {numberError && toast.error(numberError, {
-  duration: 4000,
-  position: 'top-center',})}
           <Button type="submit" disabled={isLoading} fontSize="l">
             Add contact
           </Button>
@@ -111,5 +119,3 @@ export const ContactForm = () => {
     </>
   );
 };
-
-

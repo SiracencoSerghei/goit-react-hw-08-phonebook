@@ -2,27 +2,21 @@ import {
   Button,
   Text,
   Modal,
-  ModalBody,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  Stack,
-  InputGroup,
-  InputLeftAddon,
-  Input,
-  ModalFooter,
   Flex,
 } from "@chakra-ui/react";
 import React, { useState, useRef } from "react";
 import { BsTrash, BsFillPencilFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { deleteContact, updateContact } from "../../redux/contacts/operations";
+import { showErrorToast, showSuccessToast } from 'src/utils/messages';
 
 import { UpdateForm } from '../UpdateForm/UpdateForm';
 
-export const ContactsListItem = ({ contact: { name, number, id } }) => {
-  console.log("contact", name, number, id);
+export const ContactsListItem = ({ contact: { name, number, id }, contacts }) => {
+  // console.log("contact", name, number, id);
+  // console.log('contacts', contacts)
 
   const initialRef = useRef(null);
   const finalRef = useRef(null);
@@ -41,7 +35,7 @@ export const ContactsListItem = ({ contact: { name, number, id } }) => {
 
   const handleUpdate = (event) => {
     event.preventDefault();
-    console.log("click on save");
+    // console.log("click on save");
     const form = event.target;
     dispatch(
       updateContact({
@@ -52,16 +46,31 @@ export const ContactsListItem = ({ contact: { name, number, id } }) => {
         },
       })
     );
+
+    showSuccessToast(`Contact: ${name} is updated`)
     form.reset();
     onClose();
   };
   const handleChange = (event) => {
     const { name, value } = event.target;
     switch (name) {
-      case "name":
+      case "name": const isNameExists = contacts.some(
+        (contact) => value.toLowerCase() === contact.name.toLowerCase()
+      );
+      if (isNameExists) {
+        showErrorToast(`Sorry ${value} already exist!`);
+        return;
+      }
         setUpdatedName(value);
         break;
       case "number":
+        const isNumberExists = contacts.some(
+          (contact) => value.toLowerCase() === contact.number.toLowerCase()
+        );
+        if (isNumberExists) {
+          showErrorToast(`Sorry ${value} already exist!`);
+          return;
+        }
         setUpdatedNumber(value);
         break;
       default:

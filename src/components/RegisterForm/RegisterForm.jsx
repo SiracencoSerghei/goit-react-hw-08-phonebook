@@ -16,12 +16,31 @@ import { register } from 'src/redux/auth/operations';
 
 export const RegisterForm = () => {
   const dispatch = useDispatch();
-
   const [showPassword, setShowPassword] = useState(false);
   const bgColor = useColorModeValue('gray.200', 'gray.700');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPass] = useState('');
+
+  const handleChange = event => {
+    const { name, value } = event.target;
+    switch (name) {
+      case 'name':
+        setName(value);
+        break;
+      case 'email':
+        setEmail(value);
+        break;
+      case 'password':
+        setPass(value);
+        break;
+      default:
+        return;
+    }
+  };
   
   const handleSignUp = e => {
-
+console.log('name, email, password', name, email, password)
     e.preventDefault();
     const form = e.currentTarget;
     dispatch(
@@ -57,8 +76,10 @@ export const RegisterForm = () => {
               <Input
                 size="md"
                 type="text"
-                name="username"
+                name="name"
+                value={name}
                 placeholder="John Deer"
+                onChange={handleChange}
               />
             </FormControl>
 
@@ -68,7 +89,9 @@ export const RegisterForm = () => {
                 size="md"
                 type="email"
                 name="email"
+                value={email}
                 placeholder="email@mail.com"
+                onChange={handleChange}
               />
             </FormControl>
             <FormControl id="password" isRequired>
@@ -78,8 +101,10 @@ export const RegisterForm = () => {
                   size="md"
                   type={showPassword ? 'text' : 'password'}
                   name="password"
+                  value={password}
                   pattern="(?=.*\d).{7,}"
                   placeholder="7 characters or more, please"
+                  onChange={handleChange}
                 />
                 <InputRightElement h={'full'}>
                   <Button

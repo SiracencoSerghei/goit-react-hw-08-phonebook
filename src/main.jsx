@@ -15,7 +15,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <BrowserRouter basename="/goit-react-hw-08-phonebook/">
           <ChakraProvider>
             <App/>
-            <Toaster />
+            <Toaster position="top-right" />
           </ChakraProvider>
         </BrowserRouter>
       </PersistGate>

@@ -24,7 +24,7 @@ export const DeleteContactReducer = (state, action) => {
 };
 
 export const UpdateContactReducer = (state, action) => {
-  console.log(state);
+  // console.log(state);
   state.contacts.items.map(contact => {
     if (contact.id === action.payload.id) {
       contact.name = action.payload.name;
