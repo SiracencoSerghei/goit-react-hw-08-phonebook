@@ -97,7 +97,6 @@ export const updateContact = createAsyncThunk(
       } else if (status === 401) {
         showErrorToast('Missing header with authorization token.');
       }
-    }
       return thunkAPI.rejectWithValue(error.message);
     }
   }
